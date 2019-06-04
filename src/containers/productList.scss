@@ -1,0 +1,19 @@
+.products {
+  font-size: 25px;
+  margin: 50px auto;
+  text-align: center;
+  width: 500px;
+  min-width: 320px;
+}
+
+th, .title, .price, .description {border: 1px solid grey;} 
+
+.edit {
+  color: green;
+  cursor: pointer;
+}
+
+.delete {
+  color: red;
+  cursor: pointer;
+}
