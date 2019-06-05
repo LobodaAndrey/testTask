@@ -3,22 +3,21 @@ import './productList.scss'
 import AddProduct from './addProduct';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as data from './data.json';
 import axios from 'axios'
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: data.items,
+      items: this.props.product.products,
       newItem: {
       }
     }
+    console.log(this.props)
   }
 
   addItem = ( value ) => {
     this.setState({ newItem: value })
-
     setTimeout(() => {
       this.setState({
         items: [...this.state.items, this.state.newItem]
@@ -27,11 +26,13 @@ class ProductList extends Component {
   }
 
   componentWillReceiveProps(props){
-    console.log(props.auth.token)
+    console.log(props)
     axios.get(' https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
       mode: 'no-cors',
       method: "GET",
-      Authorization: props.auth.token
+      credentials: "include",
+      headers: {
+        Authorization: 'Bearer ' + props.token  }
     })
       .then((res) => {
         console.log(res)

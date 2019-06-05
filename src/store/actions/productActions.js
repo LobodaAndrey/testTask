@@ -1,16 +1,23 @@
-import {ADD_PRODUCT, REMOVE_PRODUCT, EDIT_PRODUCT} from '../../constants';
+import {GET_PRODUCTS, ADD_PRODUCT, REMOVE_PRODUCT, EDIT_PRODUCT} from '../../constants';
 
-export const addProduct = (id, title, price, description) => ({
+export const getProducts = (products) => ({
+  type: GET_PRODUCTS,
+  products
+});
+
+export const addProduct = (id, title, price, description, status) => ({
   type: ADD_PRODUCT,
   id,
   title,
   price, 
-  description
+  description,
+  status
 });
 
-export const removeProduct = id => ({
+export const removeProduct = (id, status) => ({
   type: REMOVE_PRODUCT,
-  id
+  id,
+  status
 });
 
 export const editProduct = (id, title, price, description) => ({

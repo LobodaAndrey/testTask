@@ -17,6 +17,7 @@ const Header = (props) => {
       password: "!password!"
     })
       .then((res) => {
+        console.log(res)
         token = res.data.access_token
         props.loginSuccess(name, token)
       })
