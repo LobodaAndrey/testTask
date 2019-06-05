@@ -4,6 +4,7 @@ import AddProduct from './addProduct';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as data from './data.json';
+import axios from 'axios'
 
 class ProductList extends Component {
   constructor(props) {
@@ -25,6 +26,18 @@ class ProductList extends Component {
     }, 100)
   }
 
+  componentWillReceiveProps(props){
+    console.log(props.auth.token)
+    axios.get(' https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
+      mode: 'no-cors',
+      method: "GET",
+      Authorization: props.auth.token
+    })
+      .then((res) => {
+        console.log(res)
+      })
+  }
+  
   render() {
     return (
       <React.Fragment>
@@ -68,6 +81,7 @@ class ProductList extends Component {
 const mapStateToProps = store => {
   return {
     product: store.product,
+    auth: store.auth
   }
 }
 

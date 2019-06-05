@@ -1,8 +1,9 @@
-
 import {LOGIN_SUCCESS, LOGOUT} from '../../constants';
 
-export const loginSuccess = () => ({
-  type: LOGIN_SUCCESS
+export const loginSuccess = (name, token) => ({
+  type: LOGIN_SUCCESS,
+  name,
+  token
 })
 
 export const logout = () => ({
@@ -13,3 +14,4 @@ export const profileActions = {
   loginSuccess,
   logout
 };
+

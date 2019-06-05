@@ -13,7 +13,10 @@ export const removeProduct = id => ({
   id
 });
 
-export const editProduct = id => ({
+export const editProduct = (id, title, price, description) => ({
   type: EDIT_PRODUCT,
-  id
+  id,
+  title,
+  price, 
+  description
 });

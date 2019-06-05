@@ -1,8 +1,9 @@
 import {LOGIN_SUCCESS, LOGOUT} from '../../constants'
 
 const initialState = {
-  name: 'Guest',
-  isLogged: false
+  name: 'Гость',
+  isLogged: false,
+  token: ''
 }
 
 export default function AuthReducer(state = initialState, action) {
@@ -10,13 +11,14 @@ export default function AuthReducer(state = initialState, action) {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        name: 'Andrey',
-        isLogged: true
+        name: action.name,
+        isLogged: true,
+        token: action.token
       };
     case LOGOUT:
       return {
         ...state,
-        name: 'Guest',
+        name: 'Гость',
         isLogged: false
       }
     default:
