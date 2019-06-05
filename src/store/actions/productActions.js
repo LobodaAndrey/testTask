@@ -14,10 +14,10 @@ export const addProduct = (id, title, price, description, status) => ({
   status
 });
 
-export const removeProduct = (id, status) => ({
+export const removeProduct = (id) => ({
   type: REMOVE_PRODUCT,
   id,
-  status
+  status: 0
 });
 
 export const editProduct = (id, title, price, description) => ({

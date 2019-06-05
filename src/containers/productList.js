@@ -10,19 +10,23 @@ class ProductList extends Component {
     super(props);
     this.state = {
       items: this.props.product.products,
-      newItem: {
-      }
     }
-    console.log(this.props)
   }
 
-  addItem = ( value ) => {
-    this.setState({ newItem: value })
-    setTimeout(() => {
-      this.setState({
-        items: [...this.state.items, this.state.newItem]
+  productRemove = (id, status) => {
+    axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', {
+        mode: 'no-cors',
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: 'Bearer ' + this.props.token
+        },
+        "group_id": id,
+        "status": 0
       })
-    }, 100)
+        .then((res) => {
+          console.log(res)
+        })
   }
 
   componentWillReceiveProps(props){
@@ -32,17 +36,18 @@ class ProductList extends Component {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: 'Bearer ' + props.token  }
+        Authorization: 'Bearer ' + props.token 
+      }
     })
       .then((res) => {
         console.log(res)
       })
   }
-  
+
   render() {
     return (
       <React.Fragment>
-        <AddProduct addItem={this.addItem} />
+        <AddProduct addItem={this.addItem} addProduct={this.propsaddProduct}/>
         <table className="products">
           <tbody>
             <tr>
@@ -50,23 +55,25 @@ class ProductList extends Component {
               <th>Цена</th>
               <th>Описание</th>
             </tr>
-            {this.state.items && this.state.items.map(item => {
-              const id = 1;
-              return (
+            {this.state.items && this.state.items.map((item, i) => {
+              if (!this.props.product.products[i].status) {
+                return null
+              }
+              return (    
                 <tr key={Math.random()}>
                   <td className="title">{item.title}</td>
                   <td className="price">{item.price}</td>
                   <td className="description">{item.description}</td>
                   <td>
-                    <Link ref to={`details/${id}`}>
+                    <Link ref to={'details/'+ this.props.product.products[i].id}>
                       <span className="edit">
-                        <i className="fas fa-pen"></i>
+                        <i onClick={this.props.editProduct} className="fas fa-pen"></i>
                       </span>
                     </Link>
                   </td>
                   <td>
                     <span className="delete">
-                      <i className="fas fa-times-circle"></i>
+                      <i onClick={this.props.removeProduct} className="fas fa-times-circle"></i>
                     </span>
                   </td>
                 </tr>

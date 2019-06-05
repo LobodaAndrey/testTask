@@ -6,21 +6,21 @@ const initialState = {
       "id": 1,
       "title": "bread",
       "price": 20,
-      "description": "lalala",
+      "description": "description 1",
       "status": 10
     },
     {
       "id": 2,
       "title": "Milk",
       "price": 20,
-      "description": "lalala",
+      "description": "description 2",
       "status": 10
     },
     {
       "id": 3,
       "title": "Icecream",
       "price": 20,
-      "description": "lalala",
+      "description": "description 3",
       "status": 10
     }
   ]

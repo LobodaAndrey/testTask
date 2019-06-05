@@ -14,7 +14,7 @@ const Header = (props) => {
       method: "POST",
       credentials: "include",
       email: "user1@email.com",
-      password: "!password!"
+      password: "!password!",
     })
       .then((res) => {
         console.log(res)
@@ -22,6 +22,7 @@ const Header = (props) => {
         props.loginSuccess(name, token)
       })
   }
+  
   return (
     <header className="main-header">
       <Link to="/">
