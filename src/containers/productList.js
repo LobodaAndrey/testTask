@@ -3,13 +3,12 @@ import './productList.scss'
 import AddProduct from './addProduct';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {getData} from '../services/getProducts';
+// import {getData} from '../services/getProducts';
 import axios from 'axios';
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.product)
     this.state = {
       data: this.props.product.data,
     }
@@ -25,7 +24,6 @@ class ProductList extends Component {
     }
   })
     .then((res) => {
-      console.log(res)
       this.setState({
         data: res.data
       })
@@ -35,7 +33,7 @@ class ProductList extends Component {
   render() {
     return (
       <React.Fragment>
-        <AddProduct addProduct={this.props.addProduct} />
+        <AddProduct addProduct={this.props.addProduct} token={this.props.token}/>
         <p>{this.props.data}</p>
         <table className="products">
           <tbody>
