@@ -18,7 +18,7 @@ function App( props ) {
         <Switch>
           <Route exact path="/" 
           render={(routeProps) => (
-            <ProductList {...routeProps} getProducts={getProductsAction} addProduct={addProductAction}  removeProduct={removeProductAction} editProduct={editProductAction}/>
+            <ProductList {...routeProps} getProducts={getProductsAction} addProduct={addProductAction}  removeProduct={removeProductAction} editProduct={editProductAction} token={props.auth.token}/>
           )}
           />
           <Route path="/details/:id" component={Details} />
@@ -40,8 +40,8 @@ const mapDispatchToProps = dispatch => {
     loginSuccessAction: (name, token) => dispatch(loginSuccess(name, token)),
     addProductAction: (id, title, price, description, status) => dispatch(addProduct(id, title, price, description, status)),
     editProductAction: (id, title, price, description) => dispatch(editProduct(id, title, price, description)),
-    removeProductAction: (id, status) => dispatch(removeProduct(id, status)),
-    getProductsAction: products => dispatch(getProducts(products))
+    removeProductAction: (id) => dispatch(removeProduct(id)),
+    getProductsAction: data => dispatch(getProducts(data))
   }
 }
 

@@ -17,3 +17,7 @@ th, .title, .price, .description {border: 1px solid grey;}
   color: red;
   cursor: pointer;
 }
+
+.description {
+  min-width: 300px;
+}

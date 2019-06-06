@@ -31,6 +31,7 @@ export default function ProductReducer(state = initialState, action) {
     case GET_PRODUCTS:
       return {
         ...state,
+        products: action.products
       };
     case ADD_PRODUCT: 
       return {
@@ -39,8 +40,11 @@ export default function ProductReducer(state = initialState, action) {
     case EDIT_PRODUCT:
       return {
         ...state
-      }
+      };
   case REMOVE_PRODUCT:
+    return {
+      ...state
+    };
     default:
       return state
   }

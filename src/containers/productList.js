@@ -3,51 +3,40 @@ import './productList.scss'
 import AddProduct from './addProduct';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
+import {getData} from '../services/getProducts';
+import axios from 'axios';
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.product)
     this.state = {
-      items: this.props.product.products,
+      data: this.props.product.data,
     }
   }
 
-  productRemove = (id, status) => {
-    axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', {
-        mode: 'no-cors',
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: 'Bearer ' + this.props.token
-        },
-        "group_id": id,
-        "status": 0
-      })
-        .then((res) => {
-          console.log(res)
-        })
-  }
-
-  componentWillReceiveProps(props){
-    console.log(props)
+  componentDidUpdate() {
     axios.get(' https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
-      mode: 'no-cors',
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Authorization: 'Bearer ' + props.token 
-      }
-    })
-      .then((res) => {
-        console.log(res)
+    mode: 'no-cors',
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: 'Bearer ' + this.props.token
+    }
+  })
+    .then((res) => {
+      console.log(res)
+      this.setState({
+        data: res.data
       })
+    })
   }
 
   render() {
     return (
       <React.Fragment>
-        <AddProduct addItem={this.addItem} addProduct={this.propsaddProduct}/>
+        <AddProduct addProduct={this.props.addProduct} />
+        <p>{this.props.data}</p>
         <table className="products">
           <tbody>
             <tr>
@@ -55,17 +44,17 @@ class ProductList extends Component {
               <th>Цена</th>
               <th>Описание</th>
             </tr>
-            {this.state.items && this.state.items.map((item, i) => {
-              if (!this.props.product.products[i].status) {
-                return null
-              }
-              return (    
-                <tr key={Math.random()}>
+            {this.state.data && this.state.data.map((item, i) => {
+              // if (!this.state.product.data[i].status) {
+              //   return null
+              // }
+              return (
+                <tr key={Math.random()} id={item.id}>
                   <td className="title">{item.title}</td>
                   <td className="price">{item.price}</td>
                   <td className="description">{item.description}</td>
                   <td>
-                    <Link ref to={'details/'+ this.props.product.products[i].id}>
+                    <Link ref to={'details/' /*this.props.product.data[i].id*/ }>
                       <span className="edit">
                         <i onClick={this.props.editProduct} className="fas fa-pen"></i>
                       </span>

@@ -7,6 +7,7 @@ import axios from 'axios';
 const Header = (props) => {
   const sendData = (e) => {
     e.preventDefault();
+    console.log('login request sended...')
     let name = 'Andrey';
     let token = '';
     axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/users/auth', {
@@ -17,7 +18,6 @@ const Header = (props) => {
       password: "!password!",
     })
       .then((res) => {
-        console.log(res)
         token = res.data.access_token
         props.loginSuccess(name, token)
       })
@@ -30,7 +30,7 @@ const Header = (props) => {
       </Link>
       <p>Привет, {props.auth.name}</p>
       <br/>
-      <p>Токен, полученый от сервера: {props.auth.token}</p>
+      <p>Токен с сервера: {props.auth.token}</p>
       <button onClick={sendData}>{props.auth.isLogged ? 'Выйти': 'Войти'}</button>
     </header>
   );

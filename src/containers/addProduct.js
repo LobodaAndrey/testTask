@@ -3,13 +3,16 @@ import axios from 'axios';
 import './addProduct.scss';
 
 class AddProduct extends Component {
-  state = {
-    newItem: {
-      id: 0,
-      title: '',
-      price: 0,
-      description: '',
-      status: 0
+  constructor(props) {
+    super(props)
+    this.state = {
+      newItem: {
+        id: 0,
+        title: '',
+        price: 0,
+        description: '',
+        status: 0
+      }
     }
   }
 
@@ -22,15 +25,17 @@ class AddProduct extends Component {
     this.setState({
       newItem:
       {
+        id: Date.now(),
         title: this.titleRef.current.value,
         price: this.priceRef.current.value,
-        description: this.descriptionRef.current.value
+        description: this.descriptionRef.current.value,
+        status: 10
       }
     })
   }
 
-  sendNewItem = (e) => {
-    console.log('new item added')
+  sendNewItem = () => {
+    console.log('new item added on server')
     console.log(this.state.newItem)
     axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', {
       mode: 'no-cors',
@@ -39,10 +44,10 @@ class AddProduct extends Component {
       headers: {
         Authorization: 'Bearer ' + this.props.token
       },
-      "group_id": 1,
-      "name": "Article 1",
-      "description": "Article 1 Description",
-      "price": "12.50",
+      "group_id": this.state.id,
+      "name": this.state.title,
+      "description": this.state.description,
+      "price": this.state.price,
       "status": 10
     })
       .then((res) => {
