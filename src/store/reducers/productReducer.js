@@ -1,29 +1,7 @@
 import {GET_PRODUCTS, ADD_PRODUCT, REMOVE_PRODUCT, EDIT_PRODUCT} from '../../constants'
 
 const initialState = {
-  products: [
-    {
-      "id": 1,
-      "title": "bread",
-      "price": 20,
-      "description": "description 1",
-      "status": 10
-    },
-    {
-      "id": 2,
-      "title": "Milk",
-      "price": 20,
-      "description": "description 2",
-      "status": 10
-    },
-    {
-      "id": 3,
-      "title": "Icecream",
-      "price": 20,
-      "description": "description 3",
-      "status": 10
-    }
-  ]
+  products: []
 }
 
 export default function ProductReducer(state = initialState, action) {

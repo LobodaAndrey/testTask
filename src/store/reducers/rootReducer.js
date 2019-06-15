@@ -4,5 +4,5 @@ import ProductReducer  from './productReducer'
 
 export const rootReducer = combineReducers({
   auth: AuthReducer,
-  product: ProductReducer,
+  products: ProductReducer,
 })

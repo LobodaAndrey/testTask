@@ -1,4 +1,4 @@
-import {LOGIN_SUCCESS, LOGOUT} from '../../constants';
+import {LOGIN_SUCCESS, LOGOUT_SUCCESS} from '../../constants';
 
 export const loginSuccess = (name, token) => ({
   type: LOGIN_SUCCESS,
@@ -6,12 +6,12 @@ export const loginSuccess = (name, token) => ({
   token
 })
 
-export const logout = () => ({
-  type: LOGOUT
+export const logoutSuccess = (token) => ({
+  type: LOGOUT_SUCCESS
 })
 
 export const profileActions = {
   loginSuccess,
-  logout
+  logoutSuccess
 };
 

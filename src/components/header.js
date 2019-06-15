@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import axios from 'axios';
 
 const Header = (props) => {
+
   const sendData = (e) => {
     e.preventDefault();
     console.log('login request sended...')
@@ -18,20 +19,31 @@ const Header = (props) => {
       password: "!password!",
     })
       .then((res) => {
-        token = res.data.access_token
+        token = res.data.access_token;
+        localStorage.setItem('token', res.data.access_token)
         props.loginSuccess(name, token)
       })
   }
-  
+
+  const clearData = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    let token = null;
+    props.logoutSuccess(token)
+  }
+
   return (
     <header className="main-header">
       <Link to="/">
         <h1 className="brand-title">Список продуктов</h1>
       </Link>
       <p>Привет, {props.auth.name}</p>
-      <br/>
+      <br />
       <p>Токен с сервера: {props.auth.token}</p>
-      <button onClick={sendData}>{props.auth.isLogged ? 'Выйти': 'Войти'}</button>
+      {props.auth.token ?
+        <button onClick={clearData}>Выйти</button> :
+        <button onClick={sendData}>Войти</button>
+      }
     </header>
   );
 }

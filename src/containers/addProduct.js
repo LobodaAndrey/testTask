@@ -38,7 +38,7 @@ class AddProduct extends Component {
     console.log('new item added on server')
     console.log(this.state.newItem)
     axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', {
-      mode: 'no-cors',
+      mode: "no-cors",
       method: "POST",
       credentials: "include",
       headers: {

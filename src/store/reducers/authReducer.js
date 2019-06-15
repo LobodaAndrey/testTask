@@ -1,9 +1,9 @@
-import {LOGIN_SUCCESS, LOGOUT} from '../../constants'
+import {LOGIN_SUCCESS, LOGOUT_SUCCESS} from '../../constants'
 
 const initialState = {
   name: 'Гость',
   isLogged: false,
-  token: ''
+  token: localStorage.getItem('token')
 }
 
 export default function AuthReducer(state = initialState, action) {
@@ -15,11 +15,12 @@ export default function AuthReducer(state = initialState, action) {
         isLogged: true,
         token: action.token
       };
-    case LOGOUT:
+    case LOGOUT_SUCCESS:
       return {
         ...state,
         name: 'Гость',
-        isLogged: false
+        isLogged: false,
+        token: action.token
       }
     default:
       return state

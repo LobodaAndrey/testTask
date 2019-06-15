@@ -10,6 +10,7 @@ function login() {
   })
   .then((res) => {
     console.log(res.data.access_token)
+    localStorage.setItem('token', res.data.access_token)
     return (res.data.access_token)
   })
 }
