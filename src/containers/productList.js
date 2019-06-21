@@ -66,12 +66,9 @@ class ProductList extends Component {
               <th>Описание</th>
             </tr>
             {this.state.data.length && this.state.data.map((item, i) => {
-              // if (!this.props.product.data[i].status) {
-              //   return null
-              // }
               return (
                 <tr key={Math.random()} id={item.id}>
-                  <td className="title">{item.title}</td>
+                  <td className="title">{item.name}</td>
                   <td className="price">{item.price}</td>
                   <td className="description">{item.description}</td>
                   <td>
