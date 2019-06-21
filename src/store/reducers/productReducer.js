@@ -21,7 +21,9 @@ export default function ProductReducer(state = initialState, action) {
       };
   case REMOVE_PRODUCT:
     return {
-      ...state
+      ...state,
+      id: action.id,
+      status: 0
     };
     default:
       return state

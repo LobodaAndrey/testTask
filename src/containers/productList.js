@@ -18,8 +18,6 @@ class ProductList extends Component {
     this.props.token &&
     axios.get(' https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
     mode: 'no-cors',
-    method: "GET",
-    credentials: "include",
     headers: {
       Authorization: 'Bearer ' + this.props.token
     }
@@ -51,9 +49,7 @@ class ProductList extends Component {
   }
 
   render() {
-    console.log(this.state.data)
-    return (
-    
+    return (  
       <React.Fragment>
         { this.props.token && 
         <div>

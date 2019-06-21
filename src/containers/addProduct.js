@@ -8,7 +8,7 @@ class AddProduct extends Component {
     this.state = {
       newItem: {
         id: 0,
-        title: '',
+        name: '',
         price: 0,
         description: '',
         status: 0
@@ -16,7 +16,7 @@ class AddProduct extends Component {
     }
   }
 
-  titleRef = React.createRef()
+  nameRef = React.createRef()
   priceRef = React.createRef()
   descriptionRef = React.createRef()
 
@@ -26,26 +26,26 @@ class AddProduct extends Component {
       newItem:
       {
         id: Date.now(),
-        title: this.titleRef.current.value,
+        name: this.nameRef.current.value,
         price: this.priceRef.current.value,
         description: this.descriptionRef.current.value,
         status: 10
       }
     })
   }
-
-  sendNewItem = () => {
+  
+  sendNewItem = (e) => {
+    e.preventDefault();
+    console.log(this.props.token)
     console.log('new item added on server')
     console.log(this.state.newItem)
-    axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', {
-      mode: "no-cors",
-      method: "POST",
+    axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', this.state.newItem, {
       credentials: "include",
       headers: {
         Authorization: 'Bearer ' + this.props.token
       },
       "group_id": this.state.id,
-      "name": this.state.title,
+      "name": this.state.name,
       "description": this.state.description,
       "price": this.state.price,
       "status": 10
@@ -61,8 +61,8 @@ class AddProduct extends Component {
         <form className="add-form" onSubmit={(e) => {
           e.preventDefault()
         }}>
-          <label htmlFor="title">Название</label>
-          <input ref={this.titleRef} id="title" type="text" onChange={this.handleChange} />
+          <label htmlFor="name">Название</label>
+          <input ref={this.nameRef} id="title" type="text" onChange={this.handleChange} />
           <label htmlFor="price">Цена</label>
           <input ref={this.priceRef} id="price" type="number" onChange={this.handleChange} />
           <label htmlFor="description">Описание</label>

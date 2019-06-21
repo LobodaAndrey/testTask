@@ -21,7 +21,10 @@ function App( props ) {
             <ProductList getProducts={getProductsAction} addProduct={addProductAction}  removeProduct={removeProductAction} editProduct={editProductAction} token={props.auth.token}/>
           )}
           />
-          <Route path="/details/:id" component={Details} />
+          <Route path="/details/:id" render={() => (
+            <Details token={props.auth.token} data={getProductsAction}/>
+          )}
+         />
         </Switch>
       </div>
     </BrowserRouter>
@@ -42,7 +45,7 @@ const mapDispatchToProps = dispatch => {
     logoutSuccessAction: (token) => dispatch(logoutSuccess(token)),
     addProductAction: (id, title, price, description, status) => dispatch(addProduct(id, title, price, description, status)),
     editProductAction: (id, title, price, description) => dispatch(editProduct(id, title, price, description)),
-    removeProductAction: (id) => dispatch(removeProduct(id))
+    removeProductAction: (id, status) => dispatch(removeProduct(id, status))
   }
 }
 
