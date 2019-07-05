@@ -2,16 +2,14 @@ import { store } from '../store/index';
 import axios from 'axios';
 import { actionTypes as productActionTypes } from '../store/reducers/productReducer'
 
-const config = {
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.getItem('token')
-  }
-};
-
 export const getProducts = () => {
-  return axios.get('https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', config)
+  return axios.get('https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+  })
     .then((res) => {
       return res.data
     }).then((res) => {

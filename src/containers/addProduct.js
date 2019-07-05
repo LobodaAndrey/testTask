@@ -37,7 +37,7 @@ class AddProduct extends Component {
   
   sendNewItem = (e) => {
     e.preventDefault();
-    if (this.state.newItem.name.length > 2 && this.state.newItem.description.length > 2) {
+    if (this.state.newItem.name.length && this.state.newItem.description.length ) {
       addProduct(this.state.newItem)
       getProducts();
     } else {

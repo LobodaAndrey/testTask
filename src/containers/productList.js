@@ -10,7 +10,7 @@ class ProductList extends Component {
   state = {
     show: false,
     currentId: null,
-    product: {  
+    product: {
       newTitle: '',
       newPrice: 0,
       newDescription: ''
@@ -47,15 +47,24 @@ class ProductList extends Component {
   }
 
   componentDidMount() {
-    getProducts()
+    if (this.props.auth.token) {
+      getProducts()
+    }
   }
-
+  
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.auth.token) {
+      if (!this.props.products.products.length) {
+        getProducts()
+      }
+    }
+  }
+  
   handleUpdate = (id) => {
     editProduct(id, this.state.product);
     getProducts();
     this.handleClose();
   }
-
 
   handleChange = () => {
     this.setState(prevState => ({
@@ -82,24 +91,24 @@ class ProductList extends Component {
                 <Modal.Title>Edit your product</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <Form onSubmit={(e) => { 
+                <Form onSubmit={(e) => {
                   e.preventDefault();
-                  this.handleUpdate(this.state.currentId) 
-                  }}>
+                  this.handleUpdate(this.state.currentId)
+                }}>
                   <Form.Group controlId="title">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control defaultValue={this.state.start.title} type="text" placeholder="title" ref={this.titleRef} onChange={this.handleChange}/>
+                    <Form.Control defaultValue={this.state.start.title} type="text" placeholder="title" ref={this.titleRef} onChange={this.handleChange} />
                   </Form.Group>
                   <Form.Group controlId="price">
                     <Form.Label>Price</Form.Label>
-                    <Form.Control defaultValue={this.state.start.price} type="number" placeholder="price" ref={this.priceRef} onChange={this.handleChange}/>
+                    <Form.Control defaultValue={this.state.start.price} type="number" placeholder="price" ref={this.priceRef} onChange={this.handleChange} />
                   </Form.Group>
                   <Form.Group controlId="descr">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control defaultValue={this.state.start.descr} type="text" placeholder="description" ref={this.descriptionRef} onChange={this.handleChange}/>
+                    <Form.Control defaultValue={this.state.start.descr} type="text" placeholder="description" ref={this.descriptionRef} onChange={this.handleChange} />
                   </Form.Group>
                   <Button variant="primary" type="submit">
-                  Save
+                    Save
                   </Button>
                 </Form>
               </Modal.Body>
@@ -159,6 +168,5 @@ const mapStateToProps = store => {
     auth: store.auth
   }
 }
-
 
 export default connect(mapStateToProps)(ProductList)

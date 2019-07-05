@@ -8,7 +8,10 @@
   }
 }
 
-.brand-title {
+.brand-logo {
   color: #fff;
-  text-decoration: none;
+  &:hover {
+    color: #ddd;
+    text-decoration: none;
+  }
 }
