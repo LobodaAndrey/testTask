@@ -2,90 +2,151 @@ import React, { Component } from 'react';
 import './productList.scss'
 import AddProduct from './addProduct';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-// import { getProductsService } from '../services/getProductsService';
+import { getProducts, removeProduct, editProduct } from '../actions/productActions';
+import { Modal, Button, Form } from 'react-bootstrap';
+
 
 class ProductList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: this.props.products
+  state = {
+    show: false,
+    currentId: null,
+    product: {  
+      newTitle: '',
+      newPrice: 0,
+      newDescription: ''
+    },
+    start: {
+      title: '',
+      price: 0,
+      descr: ''
     }
+  };
+
+  titleRef = React.createRef();
+  priceRef = React.createRef();
+  descriptionRef = React.createRef();
+
+  handleClose = () => {
+    this.setState({ show: false });
+  }
+
+  handleShow = (id, data) => {
+    console.log(data)
+    this.setState({
+      show: true,
+      currentId: id,
+      newTitle: '',
+      newPrice: 0,
+      newDescription: '',
+      start: {
+        title: data.name,
+        price: data.price,
+        descr: data.description
+      }
+    });
   }
 
   componentDidMount() {
-    this.props.token &&
-    axios.get(' https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
-    mode: 'no-cors',
-    headers: {
-      Authorization: 'Bearer ' + this.props.token
-    }
-  })
-    .then((res) => {
-      console.log(res)
-      this.setState({
-        data: res.data
-      })
-    })
+    getProducts()
   }
 
-  componentDidUpdate() {
-    this.props.token && !this.state.data &&
-    axios.get(' https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
-    mode: 'no-cors',
-    method: "GET",
-    credentials: "include",
-    headers: {
-      Authorization: 'Bearer ' + this.props.token
-    }
-  })
-    .then((res) => {
-      console.log(res)
-      this.setState({
-        data: res.data
-      })
-    })
+  handleUpdate = (id) => {
+    editProduct(id, this.state.product);
+    getProducts();
+    this.handleClose();
   }
+
+
+  handleChange = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      product: {
+        newTitle: this.titleRef.current.value,
+        newPrice: this.priceRef.current.value,
+        newDescription: this.descriptionRef.current.value
+      }
+    }
+    ))
+  }
+
 
   render() {
-    return (  
+    const { products } = this.props.products
+    return (
       <React.Fragment>
-        { this.props.token && 
-        <div>
-        <AddProduct addProduct={this.props.addProduct} token={this.props.token} />
-        <table className="products">
-          <tbody>
-            <tr>
-              <th>Название</th>
-              <th>Цена</th>
-              <th>Описание</th>
-            </tr>
-            {this.state.data.length && this.state.data.map((item, i) => {
-              return (
-                <tr key={Math.random()} id={item.id}>
-                  <td className="title">{item.name}</td>
-                  <td className="price">{item.price}</td>
-                  <td className="description">{item.description}</td>
-                  <td>
-                    <Link ref to={'details/' + item.id}>
-                      <span className="edit">
-                        <i onClick={this.props.editProduct} className="fas fa-pen"></i>
-                      </span>
-                    </Link>
-                  </td>
-                  <td>
-                    <span className="delete">
-                      <i onClick={this.props.removeProduct} className="fas fa-times-circle"></i>
-                    </span>
-                  </td>
+        {this.props.auth.token &&
+          <>
+            <AddProduct addProduct={this.props.addProduct} token={this.props.token} />
+            <Modal show={this.state.show} onHide={this.handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit your product</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form onSubmit={(e) => { 
+                  e.preventDefault();
+                  this.handleUpdate(this.state.currentId) 
+                  }}>
+                  <Form.Group controlId="title">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control defaultValue={this.state.start.title} type="text" placeholder="title" ref={this.titleRef} onChange={this.handleChange}/>
+                  </Form.Group>
+                  <Form.Group controlId="price">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control defaultValue={this.state.start.price} type="number" placeholder="price" ref={this.priceRef} onChange={this.handleChange}/>
+                  </Form.Group>
+                  <Form.Group controlId="descr">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control defaultValue={this.state.start.descr} type="text" placeholder="description" ref={this.descriptionRef} onChange={this.handleChange}/>
+                  </Form.Group>
+                  <Button variant="primary" type="submit">
+                  Save
+                  </Button>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  Cancel
+            </Button>
+              </Modal.Footer>
+            </Modal>
+            <table className="products">
+              <tbody>
+                <tr>
+                  <th>Название</th>
+                  <th>Цена</th>
+                  <th>Описание</th>
                 </tr>
-              )
-            })
-            }
-          </tbody>
-        </table>
-        </div>
+                {products && products.map((item) => {
+                  return (
+                    item.status ?
+                      <tr key={Math.random()} id={item.id}>
+                        <td className="title">{item.name}</td>
+                        <td className="price">{item.price}</td>
+                        <td className="description">{item.description}</td>
+                        <td>
+                          <span className="edit">
+                            <i onClick={() => { this.handleShow(item.id, item) }} className="fas fa-pen"></i>
+                          </span>
+                        </td>
+                        <td>
+                          <span className="delete">
+                            <i onClick={(e) => {
+                              e.preventDefault();
+                              removeProduct(item.id);
+                              getProducts()
+                            }
+                            } className="fas fa-times-circle"></i>
+                          </span>
+                        </td>
+                      </tr>
+                      :
+                      null
+                  )
+                })
+                }
+              </tbody>
+            </table>
+          </>
         }
       </React.Fragment>
     );

@@ -1,51 +1,22 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './header.scss';
-import { Link } from 'react-router-dom/cjs/react-router-dom';
-import { connect } from 'react-redux'
-import axios from 'axios';
+import { connect } from 'react-redux';
 
-const Header = (props) => {
+import {loginSuccess, logoutSuccess} from '../actions/authActions';
 
-  const sendData = (e) => {
-    e.preventDefault();
-    console.log('login request sended...')
-    let name = 'Andrey';
-    let token = '';
-    axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/users/auth', {
-      mode: 'no-cors',
-      method: "POST",
-      credentials: "include",
-      email: "user1@email.com",
-      password: "!password!",
-    })
-      .then((res) => {
-        token = res.data.access_token;
-        localStorage.setItem('token', res.data.access_token)
-        props.loginSuccess(name, token)
-      })
-  }
+import Button from 'react-bootstrap/Button';
 
-  const clearData = (e) => {
-    e.preventDefault();
-    localStorage.removeItem('token');
-    let token = null;
-    props.logoutSuccess(token)
-  }
-
-  return (
-    <header className="main-header">
-      <Link to="/">
+class Header extends Component {
+  render() { 
+    return ( 
+      <header className="main-header">
         <h1 className="brand-title">Список продуктов</h1>
-      </Link>
-      <p>Привет, {props.auth.name}</p>
-      <br />
-      <p>Токен с сервера: {props.auth.token}</p>
-      {props.auth.token ?
-        <button onClick={clearData}>Выйти</button> :
-        <button onClick={sendData}>Войти</button>
+      {
+        this.props.auth.token ? <Button variant="success" onClick={logoutSuccess}>Выйти</Button>: <Button variant="primary" onClick={loginSuccess}>Войти</Button>
       }
     </header>
-  );
+     );
+  }
 }
 
 const mapStateToProps = store => {

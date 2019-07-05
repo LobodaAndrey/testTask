@@ -1,29 +1,32 @@
-import {GET_PRODUCTS, ADD_PRODUCT, REMOVE_PRODUCT, EDIT_PRODUCT} from '../../constants'
-
 const initialState = {
   products: []
 }
 
+export const actionTypes = {
+  GET_PRODUCTS: 'GET_PRODUCTS',
+  ADD_PRODUCT: 'ADD_PRODUCT',
+  REMOVE_PRODUCT: 'REMOVE_PRODUCT',
+  EDIT_PRODUCT: 'EDIT_PRODUCT'
+}
+
 export default function ProductReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_PRODUCTS:
+    case actionTypes.GET_PRODUCTS:
       return {
         ...state,
-        products: action.products
+        products: action.payload
       };
-    case ADD_PRODUCT: 
+    case actionTypes.ADD_PRODUCT: 
       return {
         ...state
       };
-    case EDIT_PRODUCT:
+    case actionTypes.EDIT_PRODUCT:
       return {
         ...state
       };
-  case REMOVE_PRODUCT:
+  case actionTypes.REMOVE_PRODUCT:
     return {
-      ...state,
-      id: action.id,
-      status: 0
+      ...state
     };
     default:
       return state

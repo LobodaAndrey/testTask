@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import './addProduct.scss';
+import { Button } from 'react-bootstrap';
+import {addProduct, getProducts} from '../actions/productActions';
 
 class AddProduct extends Component {
   constructor(props) {
@@ -36,23 +37,13 @@ class AddProduct extends Component {
   
   sendNewItem = (e) => {
     e.preventDefault();
-    console.log(this.props.token)
-    console.log('new item added on server')
-    console.log(this.state.newItem)
-    axios.post('https://gentle-escarpment-19443.herokuapp.com/v1/articles', this.state.newItem, {
-      credentials: "include",
-      headers: {
-        Authorization: 'Bearer ' + this.props.token
-      },
-      "group_id": this.state.id,
-      "name": this.state.name,
-      "description": this.state.description,
-      "price": this.state.price,
-      "status": 10
-    })
-      .then((res) => {
-        console.log(res)
-      })
+    if (this.state.newItem.name.length > 2 && this.state.newItem.description.length > 2) {
+      addProduct(this.state.newItem)
+      getProducts();
+    } else {
+      alert ('Заполните поля названия и описания')
+    }
+
   }
 
   render() {
@@ -62,12 +53,12 @@ class AddProduct extends Component {
           e.preventDefault()
         }}>
           <label htmlFor="name">Название</label>
-          <input ref={this.nameRef} id="title" type="text" onChange={this.handleChange} />
+          <input className="add-input" ref={this.nameRef} id="title" type="text" onChange={this.handleChange} />
           <label htmlFor="price">Цена</label>
-          <input ref={this.priceRef} id="price" type="number" onChange={this.handleChange} />
+          <input className="add-input" ref={this.priceRef} id="price" type="number" onChange={this.handleChange} />
           <label htmlFor="description">Описание</label>
-          <input ref={this.descriptionRef} id="description" type="text" onChange={this.handleChange} />
-          <button onClick={this.sendNewItem}>Добавить продукт</button>
+          <input className="add-input" ref={this.descriptionRef} id="description" type="text" onChange={this.handleChange} />
+          <Button className="add-btn" onClick={this.sendNewItem}>Добавить продукт</Button>
         </form>
       </React.Fragment>
     );
